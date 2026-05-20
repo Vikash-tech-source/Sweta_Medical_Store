@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweta Medical Hall | Seller Dashboard Control Desk</title>
+    
+    <!-- Core & Custom Stylesheets -->
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+    <!-- 🔑 Seller Passcode Gate Lock Overlay -->
+    <div class="admin-lock-screen" id="admin-lock-screen">
+        <div class="lock-card glass-panel tilt-card-3d">
+            <div class="lock-icon-wrap tilt-inner-3d" data-z="30px">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            </div>
+            <div class="tilt-inner-3d" data-z="25px">
+                <h3>Sweta Medical Control Gate</h3>
+                <p style="margin-top:8px;">This area is restricted to authorized pharmacy staff. Please enter the seller passcode to decrypt and unlock dashboard controls.</p>
+            </div>
+            
+            <div class="passcode-input-group tilt-inner-3d" style="width:100%;" data-z="15px">
+                <input type="password" id="admin-passcode-input" class="glass-input" placeholder="Enter Seller Passcode..." style="text-align: center; letter-spacing: 0.3em; font-size: 1.25rem;" maxlength="12">
+                <p class="passcode-error-msg" id="passcode-error" style="margin-top:10px;">❌ Invalid seller passcode. Please try again.</p>
+            </div>
+            
+            <button class="nav-btn primary tilt-inner-3d" id="unlock-submit-btn" style="width:100%; justify-content:center; padding:12px;" data-z="20px">
+                Unlock Dashboard Controls
+            </button>
+        </div>
+    </div>
+
+    <!-- 🏥 Seller Control Panel Layout (Authorized Only) -->
+    <div class="admin-dashboard-container" id="dashboard-container">
+        
+        <!-- Header -->
+        <header style="margin-bottom: 40px; position: static;">
+            <div class="navbar" style="border-radius: 16px; padding: 16px 24px; background: rgba(9, 14, 26, 0.4);">
+                <div class="nav-brand">
+                    <div class="brand-logo" style="background: linear-gradient(135deg, var(--accent-yellow) 0%, var(--accent-red) 100%);">M</div>
+                    <div class="brand-text">
+                        <h1>Sweta Control Panel</h1>
+                        <span style="color: var(--accent-yellow);">Seller Operations</span>
+                    </div>
+                </div>
+                
+                <div class="nav-actions">
+                    <!-- Theme Switch -->
+                    <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme">
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    </button>
+                    
+                    <a href="/" class="nav-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        <span>Buyer Storefront</span>
+                    </a>
+                    
+                    <button class="nav-btn" id="lock-dashboard-btn" style="border-color: rgba(255, 60, 95, 0.4); color: var(--accent-red);">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        <span>Lock Desk</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 📊 Quick Analytics Metrics Panel -->
+        <section class="metrics-grid">
+            <div class="metric-card glass-panel">
+                <div class="metric-info">
+                    <h4>Pending Reviews</h4>
+                    <div class="metric-number" id="metric-pending">0</div>
+                </div>
+                <div class="metric-icon-box">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </div>
+            </div>
+            
+            <div class="metric-card glass-panel">
+                <div class="metric-info">
+                    <h4>Active Requests</h4>
+                    <div class="metric-number" id="metric-active">0</div>
+                </div>
+                <div class="metric-icon-box">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                </div>
+            </div>
+            
+            <div class="metric-card glass-panel">
+                <div class="metric-info">
+                    <h4>Total Revenue</h4>
+                    <div class="metric-number" id="metric-sales">₹0</div>
+                </div>
+                <div class="metric-icon-box">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                </div>
+            </div>
+            
+            <div class="metric-card glass-panel">
+                <div class="metric-info">
+                    <h4>Low Stock Alert</h4>
+                    <div class="metric-number" id="metric-stock">0</div>
+                </div>
+                <div class="metric-icon-box">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab Links -->
+        <div class="admin-tabs">
+            <button class="admin-tab-btn active" id="tab-btn-orders" onclick="switchDashboardTab('orders')">Buyer Purchase Requests</button>
+            <button class="admin-tab-btn" id="tab-btn-inventory" onclick="switchDashboardTab('inventory')">Product Catalog Inventory</button>
+        </div>
+
+        <!-- 🛍️ SECTOR 1: BUYER PURCHASE REQUESTS TAB -->
+        <div class="admin-tab-content active" id="tab-content-orders">
+            <div class="table-controls">
+                <div>
+                    <h3 style="font-size: 1.5rem;">Purchase Tickets Registry</h3>
+                    <p style="color:var(--text-muted); font-size:0.85rem; margin-top:4px;">Manage buyer checkout schedules, approve prescription validations, and direct shipping logistics.</p>
+                </div>
+                <!-- Status Filter Options -->
+                <div class="category-pills" id="order-status-filters" style="width: auto; margin-top: 0;">
+                    <button class="category-pill active" data-status="All">All Requests</button>
+                    <button class="category-pill" data-status="Pending">Pending</button>
+                    <button class="category-pill" data-status="Approved">Approved</button>
+                    <button class="category-pill" data-status="Dispensing">Dispensing</button>
+                    <button class="category-pill" data-status="Completed">Completed</button>
+                </div>
+            </div>
+
+            <!-- Orders Table Grid -->
+            <div class="table-responsive-container">
+                <table class="admin-table" id="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Track ID</th>
+                            <th>Patient Details</th>
+                            <th>Date Logged</th>
+                            <th>Basket Items</th>
+                            <th>Receipt Cost</th>
+                            <th>Prescription</th>
+                            <th>Timeline Status</th>
+                            <th>Controls</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-table-body">
+                        <!-- Loaded dynamically via admin.js -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 📦 SECTOR 2: PRODUCT INVENTORY MANAGEMENT TAB -->
+        <div class="admin-tab-content" id="tab-content-inventory">
+            <div class="table-controls">
+                <div>
+                    <h3 style="font-size: 1.5rem;">Inventory Control Center</h3>
+                    <p style="color:var(--text-muted); font-size:0.85rem; margin-top:4px;">Add, edit, adjust stocks, or remove medicines and healthcare products listed in Sweta Medical storefront.</p>
+                </div>
+                
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <div class="search-wrapper" style="width: 250px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input type="text" id="inventory-search" class="glass-input" placeholder="Search inventory..." style="padding: 10px 12px 10px 40px; font-size:0.85rem;">
+                    </div>
+                    <button class="admin-add-btn" id="open-add-product-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Add Product Item
+                    </button>
+                </div>
+            </div>
+
+            <!-- Inventory Table Grid -->
+            <div class="table-responsive-container">
+                <table class="admin-table" id="inventory-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Product Details</th>
+                            <th>Category</th>
+                            <th>Unit Cost</th>
+                            <th>Med Form</th>
+                            <th>Prescription required</th>
+                            <th>Active Inventory</th>
+                            <th>Controls</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventory-table-body">
+                        <!-- Loaded dynamically via admin.js -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🛍️ MODAL 1: ORDER LOGS DETAIL & STATUS WORKFLOW DRAWER -->
+    <div class="modal-overlay" id="order-detail-modal">
+        <div class="modal-container glass-panel" style="max-width: 800px; width: 95%;">
+            <div class="modal-header">
+                <div>
+                    <h3 id="detail-modal-tracker-id" style="font-size: 1.4rem;">Order Ticket</h3>
+                    <span style="font-size: 0.75rem; color: var(--text-muted);" id="detail-modal-date">Date Submitted</span>
+                </div>
+                <button class="modal-close" id="close-order-detail-modal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="order-detail-grid">
+                    
+                    <!-- Products and Contacts -->
+                    <div class="order-info-column">
+                        <div style="background: rgba(0,0,0,0.15); padding: 16px; border-radius: 12px; border: 1px solid var(--border-card);">
+                            <h4 style="font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">Patient Shipment Profile</h4>
+                            <p id="detail-patient-name" style="font-weight:700; font-size:1.05rem;">Alok Kumar</p>
+                            <p id="detail-patient-phone" style="color:var(--accent-cyan); font-size:0.95rem; margin-top:2px;">+91 9431X XXXXX</p>
+                            <p id="detail-patient-address" style="color:var(--text-muted); font-size:0.9rem; margin-top:6px; line-height: 1.4;">Delivery Location Address</p>
+                        </div>
+                        
+                        <div>
+                            <h4 style="font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; border-bottom:1px solid var(--border-card); padding-bottom:6px;">Summary of Requested Items</h4>
+                            <div style="max-height: 200px; overflow-y: auto;" id="detail-items-list-container">
+                                <!-- Populated dynamically -->
+                            </div>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px; padding-top:12px; border-top:1px solid var(--border-card); font-weight:800; font-size:1.15rem;">
+                                <span>Grand Total Price:</span>
+                                <span id="detail-total-price" style="color:var(--accent-cyan);">₹0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Prescription Inspector Column -->
+                    <div class="order-prescription-column">
+                        <h4 style="font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Medical Prescription Verifier</h4>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:8px;">Check that customer document lists the correct medicine and active doctor credentials.</p>
+                        
+                        <div class="prescription-inspect-box" id="detail-prescription-box">
+                            <!-- Loaded dynamically -->
+                        </div>
+                        
+                        <!-- Status Controller Selector -->
+                        <div style="margin-top: 15px;">
+                            <label for="detail-status-select" style="font-size:0.85rem; font-weight:700; color:var(--text-muted); display:block; margin-bottom:6px;">Advance Order Workflow</label>
+                            <select id="detail-status-select" class="glass-input" style="font-weight: 700; cursor: pointer;">
+                                <option value="Pending">🕒 Pending Review</option>
+                                <option value="Approved">✓ Approved Dispatch</option>
+                                <option value="Dispensing">🧪 Prepared / Dispensing</option>
+                                <option value="Out for Delivery">🛵 Out for Delivery</option>
+                                <option value="Completed">🎁 Completed Delivery</option>
+                                <option value="Cancelled">✕ Cancel Order Request</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="padding: 16px 24px; border-top: 1px solid var(--border-card); display:flex; justify-content: flex-end; gap: 12px; background: rgba(0,0,0,0.1);">
+                <button class="glass-btn" id="detail-close-btn" style="padding: 8px 20px;">Close Logs</button>
+                <button class="nav-btn primary" id="detail-save-status-btn" style="padding: 8px 24px;">Update Status</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🎁 MODAL 2: ADD / EDIT PRODUCT FORM -->
+    <div class="modal-overlay" id="product-form-modal">
+        <div class="modal-container glass-panel" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3 id="product-modal-title" style="font-size: 1.4rem;">Add Medicine Item</h3>
+                <button class="modal-close" id="close-product-form-modal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <form id="product-edit-form" class="admin-form">
+                    <input type="hidden" id="form-product-id">
+                    
+                    <div>
+                        <label for="form-product-name">Medication/Product Name</label>
+                        <input type="text" id="form-product-name" class="glass-input" placeholder="e.g. Paracetamol 500mg" required>
+                    </div>
+                    
+                    <div class="form-row-2">
+                        <div>
+                            <label for="form-product-category">Category</label>
+                            <select id="form-product-category" class="glass-input" style="cursor: pointer;" required>
+                                <option value="Pain Relief">Pain Relief</option>
+                                <option value="Antibiotics">Antibiotics</option>
+                                <option value="Cardiac Care">Cardiac Care</option>
+                                <option value="Wellness & Vitamins">Wellness</option>
+                                <option value="Personal Hygiene">Hygiene</option>
+                                <option value="Baby Care">Baby Care</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="form-product-type">Medication Form</label>
+                            <select id="form-product-type" class="glass-input" style="cursor: pointer;" required>
+                                <option value="Tablet">Tablet</option>
+                                <option value="Capsule">Capsule</option>
+                                <option value="Syrup">Syrup</option>
+                                <option value="Softgel">Softgel</option>
+                                <option value="Cream">Cream/Gel</option>
+                                <option value="Liquid">Liquid</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row-2">
+                        <div>
+                            <label for="form-product-price">Unit Price (₹)</label>
+                            <input type="number" id="form-product-price" class="glass-input" min="0" step="0.01" placeholder="₹ Price" required>
+                        </div>
+                        <div>
+                            <label for="form-product-stock">Stock Quantity</label>
+                            <input type="number" id="form-product-stock" class="glass-input" min="0" placeholder="Qty" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row-2">
+                        <div>
+                            <label for="form-product-dosage">Strength/Dosage</label>
+                            <input type="text" id="form-product-dosage" class="glass-input" placeholder="e.g. 500mg, 100ml" required>
+                        </div>
+                        <div style="display:flex; align-items:flex-end; padding-bottom: 8px;">
+                            <label class="checkbox-field-wrap">
+                                <input type="checkbox" id="form-product-rx">
+                                <span>Rx Prescription Required</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="form-product-desc">Therapeutic Description</label>
+                        <textarea id="form-product-desc" class="glass-input" rows="3" placeholder="Enter product characteristics, symptoms treated, or guidance rules..." style="resize:none;" required></textarea>
+                    </div>
+                </form>
+            </div>
+            
+            <div style="padding: 16px 24px; border-top: 1px solid var(--border-card); display:flex; justify-content: flex-end; gap: 12px; background: rgba(0,0,0,0.1);">
+                <button class="glass-btn" id="product-form-cancel-btn">Cancel</button>
+                <button class="nav-btn primary" id="product-form-save-btn">Save Product</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔎 FULLSCREEN PRESCRIPTION ZOOM MODAL -->
+    <div class="zoom-modal-overlay" id="zoom-overlay">
+        <button class="zoom-close-btn" id="close-zoom-overlay">&times;</button>
+        <img id="zoom-img" src="" alt="Prescription Document">
+    </div>
+
+    <!-- Global JS Libraries -->
+    <script src="/js/app.js"></script>
+    <script src="/js/admin.js"></script>
+</body>
+</html>

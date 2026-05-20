@@ -1,0 +1,46 @@
+[
+  {
+    "id": "order-5418-1",
+    "trackerId": "SW-3379-B",
+    "customerName": "Alok Kumar Tester",
+    "phone": "+91 94310 99999",
+    "address": "Siwan Bypass Road, Siwan, Bihar - 843599",
+    "items": [
+      {
+        "productId": "prod-001",
+        "name": "Paracetamol 500mg",
+        "price": 40.0,
+        "quantity": 2
+      },
+      {
+        "productId": "prod-003",
+        "name": "Amoxicillin 500mg",
+        "price": 140.0,
+        "quantity": 1
+      }
+    ],
+    "totalPrice": 220.0,
+    "prescriptionPath": "/uploads/prescription_SW-3379-B.png",
+    "status": "Completed",
+    "date": "2026-05-20 13:28:47"
+  },
+  {
+    "id": "order-5335-2",
+    "trackerId": "SW-7690-B",
+    "customerName": "vikash kumar mishra",
+    "phone": "+917970304395",
+    "address": "rafipur siwan bihar",
+    "items": [
+      {
+        "productId": "prod-001",
+        "name": "Paracetamol 500mg",
+        "price": 40.0,
+        "quantity": 1
+      }
+    ],
+    "totalPrice": 40.0,
+    "prescriptionPath": null,
+    "status": "Cancelled",
+    "date": "2026-05-20 14:51:44"
+  }
+]
