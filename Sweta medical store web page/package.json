@@ -1,0 +1,16 @@
+{
+  "name": "sweta-medical-hall",
+  "version": "1.0.0",
+  "description": "Professional full-stack web application for Sweta Medical Hall, Siwan",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1"
+  },
+  "author": "Antigravity Pair Programmer",
+  "license": "ISC"
+}
